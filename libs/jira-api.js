@@ -7,28 +7,25 @@
  * @method 
  * @author Ryan Regalado <ryan@design48.net>
  */
-var request = require('./../node_modules/request'); 
-var config = require('./config.json'); 
 
-// https://jira.blackline.corp/rest/api/2/search?jql=assignee='Ryan.Regalado'
-var reqOpts = {
-    protocol: 'https://',
-    host: 'jira.blackline.corp/',
-    apiVersion: 'rest/api/2/'
-};
-
-var urlPrefix = reqOpts.protocol + reqOpts.host + reqOpts.apiVersion;
-
-
-var opts = {
-    'url': '',
-    'method': 'GET',
-    'auth': {
-        'user': config.username,
-        'pass': config.password
-    },
-    'rejectUnauthorized': false
-};
+var request = require('./../node_modules/request')
+    , config = require('./config.json')
+    , url = {
+        protocol: 'https://',
+        host: 'jira.blackline.corp/',
+        apiVersion: 'rest/api/2/'
+    }
+    , urlPrefix = url.protocol + url.host + url.apiVersion
+    , reqOpts = {
+        'url': '',
+        'method': 'GET',
+        'auth': {
+            'user': config.username,
+            'pass': config.password
+        },
+        'rejectUnauthorized': false
+    }
+    ;
 
 
 function _makeUrl(suffix) {
@@ -39,8 +36,16 @@ function _makeRequest(options, callback) {
     request(options, callback);
 }
 
+function _padding(num) {
+    var str = '';
 
-/**
+    for ( var i = 0; i < num; i++) {
+        str += ' ';
+    }
+    return str;
+}
+
+/*e
  * pretty output of object
  * 
  * @name log
@@ -49,7 +54,9 @@ function _makeRequest(options, callback) {
  * @method 
  * @author Ryan Regalado <ryan@design48.net>
  */
-function log(data) {
+function log(data, numSpaces) {
+
+    var numSpaces = numSpaces || 0;
 
     // prettify json output
     // console.log('data keys', JSON.stringify(data, null, 4));
@@ -58,17 +65,13 @@ function log(data) {
         if (data.hasOwnProperty(key)) {
             switch(typeof data[key]) {
                 case 'string':
-                    console.log(key + ': ' + data[key] + '\n');
+                    var str = _padding(numSpaces);
+                    console.log(str + key + ': ' + data[key]);
                     break;
                 case 'object':
                     var obj = data[key];
-                    console.log(key + '->');
-                    for (var key2 in obj) {
-                        if (obj.hasOwnProperty(key2)) {
-                            console.log('    ' + key2 + ': ' + obj[key2]);
-                        }
-                    }
-                    console.log('\n');
+                    console.log(key + ' ->');
+                    log(obj, 4);
                 default:
 
                     break;
@@ -87,17 +90,16 @@ var jiraApi =  {
     init: function() {
         console.log('starting up api');
 
-        // var result = this.connect();
-        var result = this.getUser(config.username);
+        var result = this.getIssues(config.username);
         return result;
     },
 
     getUser: function(user) {
         console.log('getting user:', user, '\n');
 
-        opts.url = _makeUrl("user?username=" + user);
+        reqOpts.url = _makeUrl("user?username=" + user);
 
-        _makeRequest(opts, function(err, res) {
+        _makeRequest(reqOpts, function(err, res) {
             var data = JSON.parse(res.body); 
 
             log(data);
@@ -113,11 +115,14 @@ var jiraApi =  {
             , reqUrl = _makeUrl(urlSuffix)
             ;
 
-        opts.url = reqUrl;
+        reqOpts.url = reqUrl;
 
-        _makeRequest(opts, function(err, data) {
-            console.log('err', err);
-            console.log('data', data);
+        _makeRequest(reqOpts, function(err, res) {
+
+            var data = JSON.parse(res.body); 
+            console.log(Object.keys(data));
+            // console.log(Object.keys(data.issues[0]));
+            log(data.issues[0]);
         });
         return true;
     }
