@@ -1,4 +1,5 @@
 var request = require('request'); 
+var config = require('./config.json'); 
 
 var jiraApi =  {
     init: function() {
@@ -14,7 +15,11 @@ var jiraApi =  {
     },
 
     connect: function() {
-        console.log('connecting to api');
+        console.log('connecting to api with: ', config.username);
+    },
+
+    getIssues: function() {
+        console.log('retrieve all issues');
     }
 };
 
