@@ -2,16 +2,27 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         
-        jasmine: {
-            src: './libs/jira-api.js',
-            options: {
-                specs: './test/*'
+        mochaTest: {
+            test: {
+                options: {
+                    reporter: 'mocha-unfunk-reporter'
+                }
+            },
+            src: 'test/*'
+        },
+
+        watch: {
+            scripts: {
+                files: ['./libs/*','./test/*'],
+                tasks: ['test']
             }
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('test', ['jasmine']);
-    grunt.registerTask('default', ['jasmine']);
+    grunt.registerTask('test', ['mochaTest']);
+    // grunt.registerTask('watch', ['watch']);
+    grunt.registerTask('default', ['mochaTest']);
 };

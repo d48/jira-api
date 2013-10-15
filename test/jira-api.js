@@ -1,5 +1,9 @@
+var should = require('should');
+var jiraApi = require('./../libs/jira-api.js');
+
 describe('test suite for jira api', function() {
     it('should have init', function() {
-        expect(true).toBeTruthy();
+        jiraApi.init().should.equal(true);
+        true.should.equal(false);
     });
 });

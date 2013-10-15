@@ -1,4 +1,4 @@
-var request = require('request'); 
+var request = require('./../node_modules/request'); 
 var config = require('./config.json'); 
 
 // https://jira.blackline.corp/rest/api/2/search?jql=assignee='Ryan.Regalado'
@@ -34,13 +34,15 @@ var jiraApi =  {
     init: function() {
         console.log('starting up api');
 
-        this.connect();
+        var result = this.connect();
+        return result;
     },
 
     connect: function() {
         console.log('connecting to api with: ', config.username);
         this.getIssues(config.username);
         // this.getUser(config.username);
+        return true;
     },
 
     getUser: function(user) {
