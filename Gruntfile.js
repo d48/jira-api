@@ -5,7 +5,7 @@ module.exports = function(grunt) {
         mochaTest: {
             test: {
                 options: {
-                    reporter: 'mocha-unfunk-reporter'
+                    reporter: 'spec'
                 }
             },
             src: 'test/*'
@@ -24,5 +24,5 @@ module.exports = function(grunt) {
 
     grunt.registerTask('test', ['mochaTest']);
     // grunt.registerTask('watch', ['watch']);
-    grunt.registerTask('default', ['mochaTest']);
+    grunt.registerTask('default', ['jasmine']);
 };
