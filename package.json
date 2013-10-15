@@ -1,0 +1,19 @@
+{
+  "name": "jira-api",
+  "version": "0.0.1",
+  "description": "node.js cli tool to query jira api",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": "",
+  "keywords": [
+    "node",
+    "js",
+    "jira",
+    "api",
+    "rest"
+  ],
+  "author": "Ryan Regalado",
+  "license": "MIT"
+}
