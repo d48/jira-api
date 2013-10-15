@@ -18,5 +18,8 @@
   "license": "MIT",
   "dependencies": {
     "request": "~2.27.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1"
   }
 }
