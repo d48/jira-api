@@ -1,3 +1,12 @@
+/**
+ * cli for jira api. Each request will send authentication header. 
+ * This will consume JSON response for pretty stdout ouput
+ * 
+ * @name jiraApi
+ * @returns {object} - API for cli 
+ * @method 
+ * @author Ryan Regalado <ryan@design48.net>
+ */
 var request = require('./../node_modules/request'); 
 var config = require('./config.json'); 
 
@@ -30,23 +39,61 @@ function _makeRequest(options, callback) {
     request(options, callback);
 }
 
+
+function log(data) {
+    
+    for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+            switch(typeof data[key]) {
+                case 'string':
+                    console.log(key + ': ' + data[key] + '\n');
+                    break;
+                case 'object':
+                    var obj = data[key];
+                    console.log(key + '->');
+                    for (var key2 in obj) {
+                        if (obj.hasOwnProperty(key2)) {
+                            console.log('    ' + key2 + ': ' + obj[key2]);
+                        }
+                    }
+                    console.log('\n');
+                default:
+
+                    break;
+            } 
+        }
+    }
+
+}
+
+
+
+ // start api
+ // ---------------------------------------------------------------------------
 var jiraApi =  {
     init: function() {
         console.log('starting up api');
 
-        var result = this.connect();
+        // var result = this.connect();
+        var result = this.getUser(config.username);
         return result;
     },
 
-    connect: function() {
-        console.log('connecting to api with: ', config.username);
-        this.getIssues(config.username);
-        // this.getUser(config.username);
-        return true;
-    },
-
     getUser: function(user) {
-        console.log('getting user:', user);
+        console.log('getting user:', user, '\n');
+
+        opts.url = _makeUrl("user?username=" + user);
+
+        _makeRequest(opts, function(err, res) {
+            var data = JSON.parse(res.body); 
+            // console.log('err', err);
+            // console.log('data', data);
+            // console.log('data keys', JSON.stringify(data, null, 4));
+
+            log(data);
+        });
+
+        return true;
     },
 
     getIssues: function(user) {
@@ -62,6 +109,7 @@ var jiraApi =  {
             console.log('err', err);
             console.log('data', data);
         });
+        return true;
     }
 };
 
