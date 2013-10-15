@@ -40,8 +40,20 @@ function _makeRequest(options, callback) {
 }
 
 
+/**
+ * pretty output of object
+ * 
+ * @name log
+ * @param {object} data -  with multiple keys
+ * @returns {void} - outputs to console
+ * @method 
+ * @author Ryan Regalado <ryan@design48.net>
+ */
 function log(data) {
-    
+
+    // prettify json output
+    // console.log('data keys', JSON.stringify(data, null, 4));
+
     for (var key in data) {
         if (data.hasOwnProperty(key)) {
             switch(typeof data[key]) {
@@ -63,6 +75,7 @@ function log(data) {
             } 
         }
     }
+
 
 }
 
@@ -86,9 +99,6 @@ var jiraApi =  {
 
         _makeRequest(opts, function(err, res) {
             var data = JSON.parse(res.body); 
-            // console.log('err', err);
-            // console.log('data', data);
-            // console.log('data keys', JSON.stringify(data, null, 4));
 
             log(data);
         });
