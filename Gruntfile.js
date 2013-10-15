@@ -24,5 +24,5 @@ module.exports = function(grunt) {
 
     grunt.registerTask('test', ['mochaTest']);
     // grunt.registerTask('watch', ['watch']);
-    grunt.registerTask('default', ['jasmine']);
+    grunt.registerTask('default', ['mochaTest']);
 };
