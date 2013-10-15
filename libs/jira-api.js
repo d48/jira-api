@@ -10,8 +10,24 @@ var reqOpts = {
 
 var urlPrefix = reqOpts.protocol + reqOpts.host + reqOpts.apiVersion;
 
-function makeUrl(suffix) {
+
+var opts = {
+    'url': '',
+    'method': 'GET',
+    'auth': {
+        'user': config.username,
+        'pass': config.password
+    },
+    'rejectUnauthorized': false
+};
+
+
+function _makeUrl(suffix) {
     return urlPrefix + suffix;
+}
+
+function _makeRequest(options, callback) {
+    request(options, callback);
 }
 
 var jiraApi =  {
@@ -19,39 +35,28 @@ var jiraApi =  {
         console.log('starting up api');
 
         this.connect();
-
-        // request('http://www.google.com', function(err, res, body) {
-        //     if (!err && res.statusCode === 200) {
-        //         console.log(body);
-        //     }
-        // });
     },
 
     connect: function() {
         console.log('connecting to api with: ', config.username);
-        // this.getIssues();
-        this.getUser(config.username);
+        this.getIssues(config.username);
+        // this.getUser(config.username);
     },
 
     getUser: function(user) {
         console.log('getting user:', user);
     },
 
-    getIssues: function() {
-        console.log('retrieve all issues');
-        var urlSuffix = "search?jql=assignee='" + config.username + "'"
-            , reqUrl = urlPrefix + urlSuffix
+    getIssues: function(user) {
+        console.log('retrieve all issues for user:', user);
+
+        var urlSuffix = "search?jql=assignee='" + user + "'"
+            , reqUrl = _makeUrl(urlSuffix)
             ;
 
-        var opts = {
-            'url': reqUrl,
-            'auth': {
-                'user': config.username,
-                'pass': config.password
-            },
-            'rejectUnauthorized': false
-        };
-        request.get(opts, function(err, data) {
+        opts.url = reqUrl;
+
+        _makeRequest(opts, function(err, data) {
             console.log('err', err);
             console.log('data', data);
         });
