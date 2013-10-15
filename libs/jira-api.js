@@ -111,7 +111,7 @@ var jiraApi =  {
     getIssues: function(user) {
         console.log('retrieve all issues for user:', user);
 
-        var urlSuffix = "search?jql=assignee='" + user + "'"
+        var urlSuffix = "search?jql=assignee='" + user + "'&project=MTCH"
             , reqUrl = _makeUrl(urlSuffix)
             ;
 
@@ -122,7 +122,7 @@ var jiraApi =  {
             var data = JSON.parse(res.body); 
             console.log(Object.keys(data));
             // console.log(Object.keys(data.issues[0]));
-            log(data.issues[0]);
+            console.log('total', data.total);
         });
         return true;
     }
