@@ -108,6 +108,16 @@ var jiraApi =  {
         return true;
     },
 
+
+    /**
+     * Retrieves issues with set parameters
+     * 
+     * @name getIssues
+     * @param {string} user - jira username
+     * @method 
+     * @author Ryan Regalado 
+     * @todo   remove hard coded parameters and pass them as arguments from command line
+     */
     getIssues: function(user) {
         console.log('retrieve all issues for user:', user);
 
@@ -124,7 +134,6 @@ var jiraApi =  {
             // console.log(Object.keys(data.issues[0]));
             console.log('total', data.total);
         });
-        return true;
     }
 };
 
